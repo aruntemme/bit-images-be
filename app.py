@@ -8,6 +8,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+# update this below line with monogdb cluster URL
 client = MongoClient(url)
 db = client.gifs
 images = db.images
