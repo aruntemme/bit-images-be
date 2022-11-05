@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from bson import json_util
 from pymongo import MongoClient
 import urllib 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # update this below line with monogdb cluster URL
-client = MongoClient(url)
+client = MongoClient("mongodb+srv://admin:"+ urllib.parse.quote("admin@123")+"@database.roxntvt.mongodb.net/?retryWrites=true&w=majority")
 db = client.gifs
 images = db.images
 
@@ -20,7 +20,10 @@ def index():
     response = json_util.dumps(all_images)
     return response
 
-# @app.route('/images/add', methods = ['POST'])
-# def addImages():
+@app.route("/images/add")
+def add():
+    imageUrl = urllib.parse.unquote(request.args.get("image"))
+    images.insert_one({"imageUrl": imageUrl, "likes": 0})
+    return "success"
     
 
